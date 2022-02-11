@@ -23,28 +23,11 @@ class Home extends StatelessWidget{
             title:Text('Time Management'),
           ),
           drawer:Drawer(),
+
+          //contents
           body:Center(
             child:ListView(
               children:<Widget>[
-                Container(
-                  color:Colors.blueAccent,
-                  child:Text('Hello'),
-                  margin:const EdgeInsets.only(top:50,left:20,right:20),
-                  padding:const EdgeInsets.all(30),
-                ),
-                Container(
-                  color:Colors.blueAccent,
-                  child:Text('こんにちは'),
-                  margin:const EdgeInsets.all(50),
-                  padding: const EdgeInsets.all(30),
-                ),
-                ElevatedButton(
-                  onPressed:(){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Sample1()
-                    ));
-                  },
-                  child: Text('go to sample1 page'),
-                ),
                 Card(
                   margin:const EdgeInsets.all(20),
                   child:Container(
@@ -71,12 +54,27 @@ class Home extends StatelessWidget{
                     child: Text('Card3', textAlign: TextAlign.center,),
                   ),
                 ),
-
               ]
-
-
-              
             ),
+          ),
+
+          //bottom
+          bottomNavigationBar:BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add_box),
+                label: 'Add contents',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.format_list_bulleted),
+                label: 'List',
+              ),
+            ],
+            selectedItemColor: Colors.amber[800],
           ),
     );
   }
