@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sample1.dart';
+import '/widgets/BottomNavi.dart';
 
 
 void main(){
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget{
 }
 
 class Home extends StatelessWidget{
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -57,26 +59,7 @@ class Home extends StatelessWidget{
               ]
             ),
           ),
-
-          //bottom
-          bottomNavigationBar:BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add_box),
-                label: 'Add contents',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.format_list_bulleted),
-                label: 'List',
-              ),
-            ],
-            selectedItemColor: Colors.amber[800],
-          ),
+          bottomNavigationBar: BottomNavi(),
     );
   }
 }
-
