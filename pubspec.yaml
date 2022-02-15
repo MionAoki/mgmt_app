@@ -33,6 +33,9 @@ dependencies:
   sqflite:
   path:
 
+  flutter_datetime_picker: ^1.5.1 #日付,時刻の入力(add:2022.02.15)
+  intl: ^0.17.0 #日付フォーマットの指定(add:2022.02.15)
+
 
 
   # The following adds the Cupertino Icons font to your application.
