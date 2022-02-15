@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 
+//bottom
 class BottomNavi extends BottomNavigationBar{
     BottomNavi():super(
             items: const <BottomNavigationBarItem>[
@@ -22,3 +23,19 @@ class BottomNavi extends BottomNavigationBar{
 }
 
 
+/*
+//bottomでのページ遷移
+class PageTrans extends StatefulWidget{
+  @override
+  _PageTransState createState() => _PageTransState();
+}
+
+class _PageTransState extends State<PageTrans>{
+  int _currentIndex = 0;
+  void _onTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+}
+*/

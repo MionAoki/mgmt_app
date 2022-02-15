@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'mainpage.dart';
 import 'sample1.dart';
-import '/widgets/BottomNavi.dart';
+import 'sample2.dart';
+//import '/widgets/BottomNavi.dart';
 
 
 void main(){
@@ -16,50 +18,56 @@ class MyApp extends StatelessWidget{
   }
 }
 
-class Home extends StatelessWidget{
+class Home extends StatefulWidget{
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+
+class _HomeState extends State<Home>{
+  int _currentIndex = 0;
+  void _onTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+  static List<Widget> _widgetOptions = <Widget>[
+    //初期ページ
+    MainPage(),
+    // ページ1の画面
+    Sample1(),
+    // ページ2の画面
+    Sample2(),
+  ];
+
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
-          appBar:AppBar(
-            title:Text('Time Management'),
+
+          body:_widgetOptions[_currentIndex],
+
+          //bottom
+          //bottomNavigationBar: BottomNavi(),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add_box),
+                label: 'Add contents',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.format_list_bulleted),
+                label: 'List',
+              ),
+            ],
+            selectedItemColor: Colors.amber[800],
+            currentIndex: _currentIndex,
+            onTap: _onTapped,
           ),
-          drawer:Drawer(),
-
-          //contents
-          body:Center(
-            child:ListView(
-              children:<Widget>[
-                Card(
-                  margin:const EdgeInsets.all(20),
-                  child:Container(
-                    padding:const EdgeInsets.all(20),
-                    height: 60,
-                    child: Text('Card1', textAlign: TextAlign.center,),
-                  ),
-                ),
-
-                Card(
-                  margin:const EdgeInsets.all(20),
-                  child:Container(
-                    padding:const EdgeInsets.all(20),
-                    height: 60,
-                    child: Text('Card2', textAlign: TextAlign.center,),
-                  ),
-                ),
-
-                Card(
-                  margin:const EdgeInsets.all(20),
-                  child:Container(
-                    padding:const EdgeInsets.all(20),
-                    height: 60,
-                    child: Text('Card3', textAlign: TextAlign.center,),
-                  ),
-                ),
-              ]
-            ),
-          ),
-          bottomNavigationBar: BottomNavi(),
     );
   }
 }
