@@ -54,15 +54,21 @@ class _AddTextState extends State<AddText>{
             child:Text('Fill out your contents',textAlign:TextAlign.right),
           ),
 
+          //textbox
           Container(
             padding: const EdgeInsets.only(bottom:20),
-            child:new TextField(
+            child:new TextFormField(
               enabled: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 icon: Icon(Icons.task),
                 labelText: 'ToDo',
               ),
+              /* ここエラー出る
+              validator:(String value) {
+                return value.isEmpty ? '必須入力です' : null;
+              },
+              */
               onChanged: _fillText,
             ),
           ),
@@ -80,7 +86,12 @@ class _AddTextState extends State<AddText>{
                 Text("start time"),
 
                 Expanded(
-                  child:TextButton(
+                  child:ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
+                      fixedSize: Size(200, 20), //button size
+                    ),
                     child: Text(formatter.format(_starttime),),
                     onPressed: (){
                       DatePicker.showDateTimePicker(
@@ -106,12 +117,16 @@ class _AddTextState extends State<AddText>{
               children:<Widget>[
                 Padding(
                   padding:const EdgeInsets.only(right:20),
-                  child:Icon(Icons.access_time,),
+                  child:Icon(Icons.access_time_filled,),
                 ),
                 Text("end time"),
 
                 Expanded(
-                  child:TextButton(
+                  child:ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
+                    ),
                     child: Text(formatter.format(_endtime),),
                     onPressed: (){
                       DatePicker.showDateTimePicker(
@@ -131,6 +146,18 @@ class _AddTextState extends State<AddText>{
             ),//child end
           ), //containar end
 
+          Container(
+            margin: const EdgeInsets.only(top:20,bottom:20),
+            child:ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange,
+                onPrimary: Colors.white,
+                fixedSize: Size(200, 20),
+              ),
+              child: Text('Add'),
+              onPressed: (){},
+            ), 
+          ),
 
         ],
       ),
