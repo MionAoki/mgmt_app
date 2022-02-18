@@ -2,19 +2,18 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 
-class Sample2 extends StatefulWidget{
+class Page2 extends StatefulWidget{
   @override
-  _Sample2State createState() => _Sample2State();
+  _Page2State createState() => _Page2State();
 }
 
-class _Sample2State extends State<Sample2>{
+class _Page2State extends State<Page2>{
 
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('Sample page 2'),
         ),
@@ -46,7 +45,6 @@ class _Sample2State extends State<Sample2>{
             ),
           ]
         ),
-      ),
     );
   }
 }

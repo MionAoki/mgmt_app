@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'mainpage.dart';
-import 'sample1.dart';
-import 'sample2.dart';
+import 'page1.dart';
+import 'page2.dart';
 //import '/widgets/BottomNavi.dart';
 
 
@@ -14,6 +14,12 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       home:Home(),
+      routes: {
+        '/home':(context) => Home(),
+        '/main' : (context) => MainPage(),
+        '/page1' : (context) => AddText(),
+        '/page2' : (context) => Page2(),
+      }
     );
   }
 }
@@ -35,11 +41,10 @@ class _HomeState extends State<Home>{
     //初期ページ
     MainPage(),
     // ページ1の画面
-    Sample1(),
+    Page1(),
     // ページ2の画面
-    Sample2(),
+    Page2(),
   ];
-
 
   @override
   Widget build(BuildContext context){

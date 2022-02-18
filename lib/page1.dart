@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'; //date,time
+import 'package:intl/intl.dart';//time format
 import 'main.dart';
+import 'mainpage.dart';
 
 
-class Sample1 extends StatelessWidget{
+class Page1 extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('Add contents'),
         ),
         body:Center(
           child:AddText(),
         ),
-      ),
     );
   }
 }
@@ -64,11 +63,9 @@ class _AddTextState extends State<AddText>{
                 icon: Icon(Icons.task),
                 labelText: 'ToDo',
               ),
-              /* ここエラー出る
-              validator:(String value) {
-                return value.isEmpty ? '必須入力です' : null;
+              validator:(String? value) {
+                return (value!=null) ? '必須入力です' : null;
               },
-              */
               onChanged: _fillText,
             ),
           ),
@@ -155,7 +152,14 @@ class _AddTextState extends State<AddText>{
                 fixedSize: Size(200, 20),
               ),
               child: Text('Add'),
-              onPressed: (){},
+              onPressed: ()async{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MainPage("hogehoge")
+                  )
+                );
+              }
             ), 
           ),
 
