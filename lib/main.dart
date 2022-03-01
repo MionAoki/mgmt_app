@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'mainpage.dart';
 import 'page1.dart';
 import 'page2.dart';
-//import '/widgets/BottomNavi.dart';
+import 'sample_db1.dart';
 
 
 void main(){

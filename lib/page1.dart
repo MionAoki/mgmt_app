@@ -161,9 +161,9 @@ class _AddTextState extends State<AddText>{
                 );
               }
             ), 
-          ),
+          ),//Containar end
 
-        ],
+        ],//Column end
       ),
     );
   }
