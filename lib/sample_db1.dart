@@ -5,26 +5,30 @@ import 'package:path/path.dart';
 import 'dart:async';
 
 
-Future<String> sample_db({required int id ,required String text ,required int priority}) async{
+class SQLite {
+
+  static late var database;
 
     //テーブルの作成
-    final database = openDatabase(
-        //テーブルの作成場所の指定
-        join(await getDatabasesPath(), 'memo_database.db'),
-        onCreate:(db,version){ //テーブルの作成
-            return db.execute(
-                "CREATE TABLE memo(id INTEGER PRIMARY KEY, text TEXT, priority INTEGER)",
-            );
-        },
-        version: 1,
-    );
+    createDb() async{
+      database = openDatabase(
+          //テーブルの作成場所の指定
+          join(await getDatabasesPath(), 'memo_database.db'),
+          onCreate:(db,version){ //テーブルの作成
+              return db.execute(
+                  "CREATE TABLE memo(id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT, priority INTEGER)",
+              );
+          },
+          version: 1,
+      );
+    }
 
     //データの挿入
-    Future<void> insertMemo(Memo memo) async {
+    Future<int> insertMemo(Memo memo) async {
         final Database db = await database;
-        await db.insert( //openDatabaseで作成したインスタンスに対してINSERTする
+        return await db.insert( //openDatabaseで作成したインスタンスに対してINSERTする
             'memo', //対象のテーブル名
-            memo.toMap(), //保存するデータのMap
+            memo.insertMap(), //保存するデータのMap
             conflictAlgorithm: ConflictAlgorithm.replace, //コンフリクト時のアルゴリズム(SQLiteでは対応を定義しておける)
         );
     }
@@ -64,15 +68,6 @@ Future<String> sample_db({required int id ,required String text ,required int pr
         );
     }
     
-    final todo = Memo(
-    id: id, 
-    text: text, 
-    priority: priority,
-    );
-    
-    await insertMemo(todo); //todoをINSERTする
-    print(await getMemos());
-    return 'hoge'; //returnするとprintも返される
 }
 
 
@@ -91,8 +86,15 @@ class Memo {
     };
   }
   
+  Map<String,dynamic> insertMap(){ //memo型からmap型に変換(idなし)
+    return{
+      'text':text,
+      'priority':priority,
+    };
+  }
+
   @override
   String toString() {
-    return 'Memo{id: $id, tet: $text, priority: $priority}';
+    return 'Memo{id: $id, text: $text, priority: $priority}';
   }
 }

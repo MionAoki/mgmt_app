@@ -11,19 +11,41 @@ class Page2 extends StatefulWidget{
 }
 
 class _Page2State extends State<Page2>{
+  final db = SQLite();
+
+  late List<Memo> memoList = [];
+
+  List<Memo> getList(){
+    db.getMemos().then((value){
+      memoList = value;
+    });
+    return memoList;
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(sample_db(id: 1,text: '2番目',priority: 2));
-
+    final memoList = getList();
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Sample page 2'),
       ),
-      body:Text('Hello'),
+      body:_showList(memoList),
+    );
+  }
+
+  Widget _showList(list){
+    return ListView.builder(
+      itemCount: list.length.toInt(),
+      itemBuilder: (BuildContext context, int index) {
+        
+        return Text(list[index].toString());
+      },
     );
   }
 
 }//_Page2State end
+
 
 
 
