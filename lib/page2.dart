@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -11,41 +12,65 @@ class Page2 extends StatefulWidget{
 }
 
 class _Page2State extends State<Page2>{
+  //final create = CreateList();
   final db = SQLite();
-
-  late List<Memo> memoList = [];
-
-  List<Memo> getList(){
-    db.getMemos().then((value){
-      memoList = value;
-    });
-    return memoList;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final memoList = getList();
-    
+
+    //StreamBuilder用のStream型の変数を用意
+    final Stream list = (() {
+      late final StreamController controller;
+      controller = StreamController( //streamを制御するコントローラーを設定
+        onListen: () async { //Listenするときの処理
+          var allList = await db.getMemos(); //awaitすることでallListに値を入れる
+          controller.add(allList);
+          await controller.close();
+        },
+      );
+      return controller.stream;
+    })();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Sample page 2'),
       ),
-      body:_showList(memoList),
+      
+      body: 
+      Container(
+        child:StreamBuilder(
+          stream: list, //上で用意したStream型の変数(list)を入れる
+          builder: (BuildContext context, AsyncSnapshot snapShot){
+
+            return ListView.builder( //リストを表示
+              itemCount: snapShot.data?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  color: Colors.blue,
+                  child: Row(
+
+                  children:<Widget>[
+                    Card(
+                      child: Text(snapShot.data[index].id.toString()),
+                    ),
+                    Card(
+                      child: Text(snapShot.data[index].text.toString()),
+                    ),
+                    Card(
+                      child: Text(snapShot.data[index].priority.toString()),
+                    ),
+                  ],
+                ),
+
+                );
+              },
+            );
+          },
+        ),
+      ),
     );
   }
-
-  Widget _showList(list){
-    return ListView.builder(
-      itemCount: list.length.toInt(),
-      itemBuilder: (BuildContext context, int index) {
-        
-        return Text(list[index].toString());
-      },
-    );
-  }
-
 }//_Page2State end
-
 
 
 

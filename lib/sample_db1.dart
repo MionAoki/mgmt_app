@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
@@ -33,15 +34,16 @@ class SQLite {
         );
     }
 
+
     //データの取得
     Future<List<Memo>> getMemos() async {
         final Database db = await database;
         final List<Map<String, dynamic>> maps = await db.query('memo'); //検索query：SQLと同様の書き方(LIKE,INなど可能)
-        return List.generate(maps.length, (i) { //戻り値をmemo型のリストに入れる
+        return List.generate(maps.length, (i) {
             return Memo(
-                id: maps[i]['id'],
-                text: maps[i]['text'],
-                priority: maps[i]['priority'],
+              id: maps[i]['id'],
+              text: maps[i]['text'],
+              priority: maps[i]['priority'],
             );
         });
     }
@@ -86,15 +88,16 @@ class Memo {
     };
   }
   
-  Map<String,dynamic> insertMap(){ //memo型からmap型に変換(idなし)
+  Map<String,dynamic> insertMap(){ //memo型からmap型に変換(idなし:autoincrement)
     return{
       'text':text,
       'priority':priority,
     };
   }
-
+  
   @override
   String toString() {
-    return 'Memo{id: $id, text: $text, priority: $priority}';
+    return '{id: $id, text: $text, priority: $priority}';
   }
+
 }
