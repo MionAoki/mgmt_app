@@ -14,10 +14,10 @@ class SQLite {
     createDb() async{
       database = openDatabase(
           //テーブルの作成場所の指定
-          join(await getDatabasesPath(), 'memo_database.db'),
+          join(await getDatabasesPath(), 'timeMgmtTable.db'),
           onCreate:(db,version){ //テーブルの作成
               return db.execute(
-                  "CREATE TABLE memo(id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT, priority INTEGER)",
+                  "CREATE TABLE timgMgmt(id INTEGER PRIMARY KEY AUTOINCREMENT,toDo TEXT, sTime TEXT, eTime TEXT, DoY TEXT)",
               );
           },
           version: 1,
@@ -28,7 +28,7 @@ class SQLite {
     Future<int> insertMemo(Memo memo) async {
         final Database db = await database;
         return await db.insert( //openDatabaseで作成したインスタンスに対してINSERTする
-            'memo', //対象のテーブル名
+            'timgMgmt', //対象のテーブル名
             memo.insertMap(), //保存するデータのMap
             conflictAlgorithm: ConflictAlgorithm.replace, //コンフリクト時のアルゴリズム(SQLiteでは対応を定義しておける)
         );
@@ -38,12 +38,14 @@ class SQLite {
     //データの取得
     Future<List<Memo>> getMemos() async {
         final Database db = await database;
-        final List<Map<String, dynamic>> maps = await db.query('memo'); //検索query：SQLと同様の書き方(LIKE,INなど可能)
+        final List<Map<String, dynamic>> maps = await db.query('timgMgmt'); //検索query：SQLと同様の書き方(LIKE,INなど可能)
         return List.generate(maps.length, (i) {
             return Memo(
               id: maps[i]['id'],
-              text: maps[i]['text'],
-              priority: maps[i]['priority'],
+              toDo: maps[i]['toDo'],
+              sTime: maps[i]['sTime'],
+              eTime: maps[i]['eTime'],
+              DoY: maps[i]['DoY'],
             );
         });
     }
@@ -52,7 +54,7 @@ class SQLite {
     Future<void> updateMemo(Memo memo) async {
         final db = await database;
         await db.update( //書き方はINSERTのときと同様
-            'memo',
+            'timgMgmt', //テーブル名
             memo.toMap(),
             where: "id = ?",
             whereArgs: [memo.id],
@@ -64,7 +66,7 @@ class SQLite {
     Future<void> deleteMemo(int id) async {
         final db = await database;
         await db.delete( //UPDATEのときと同様(conflictAlgorithmは指定できない) 
-            'memo',
+            'timgMgmt', //テーブル名
             where: "id = ?",
             whereArgs: [id],
         );
@@ -75,29 +77,36 @@ class SQLite {
 
 class Memo {
   final int id;
-  final String text;
-  final int priority;
+  final String toDo;
+  final String sTime;
+  final String eTime;
+  final String DoY;
 
-  Memo({required this.id, required this.text, required this.priority});
+  Memo({required this.id, required this.toDo, required this.sTime,
+  required this.eTime,required this.DoY});
 
   Map<String,dynamic> toMap(){ //memo型からmap型に変換
     return{
       'id':id,
-      'text':text,
-      'priority':priority,
+      'toDo':toDo,
+      'sTime':sTime,
+      'eTime':eTime,
+      'DoY':DoY,
     };
   }
   
-  Map<String,dynamic> insertMap(){ //memo型からmap型に変換(idなし:autoincrement)
+ Map<String,dynamic> insertMap(){ //memo型からmap型に変換
     return{
-      'text':text,
-      'priority':priority,
+      'toDo':toDo,
+      'sTime':sTime,
+      'eTime':eTime,
+      'DoY':DoY,
     };
   }
   
   @override
   String toString() {
-    return '{id: $id, text: $text, priority: $priority}';
+    return '{id: $id, toDo: $toDo, sTime: $sTime, eTime: $eTime, DoY: $DoY}';
   }
 
 }

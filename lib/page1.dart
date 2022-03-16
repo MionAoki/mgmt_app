@@ -3,6 +3,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'; //date,ti
 import 'package:intl/intl.dart';//time format
 import 'main.dart';
 import 'mainpage.dart';
+import 'sample_db1.dart';
 
 
 class Page1 extends StatelessWidget{
@@ -26,6 +27,7 @@ class AddText extends StatefulWidget{
 }
 
 class _AddTextState extends State<AddText>{
+  final db = SQLite();
 
   //input text
   String _text = '';
@@ -80,6 +82,7 @@ class _AddTextState extends State<AddText>{
                   padding:const EdgeInsets.only(right:20),
                   child:Icon(Icons.access_time,),
                 ),
+                
                 Text("start time"),
 
                 Expanded(

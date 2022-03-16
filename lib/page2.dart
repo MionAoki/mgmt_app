@@ -14,6 +14,7 @@ class Page2 extends StatefulWidget{
 class _Page2State extends State<Page2>{
   //final create = CreateList();
   final db = SQLite();
+  bool isShow = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class _Page2State extends State<Page2>{
           builder: (BuildContext context, AsyncSnapshot snapShot){
 
             return ListView.builder( //リストを表示
-              itemCount: snapShot.data?.length,
+              itemCount: isShow? snapShot.data.length: 1,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   color: Colors.blue,
@@ -51,13 +52,13 @@ class _Page2State extends State<Page2>{
 
                   children:<Widget>[
                     Card(
-                      child: Text(snapShot.data[index].id.toString()),
+                      child: isShow? Text(snapShot.data[index].toDo.toString()):Text('noData'),
                     ),
                     Card(
-                      child: Text(snapShot.data[index].text.toString()),
+                      child: isShow? Text(snapShot.data[index].sTime.toString()):Text('noData'),
                     ),
                     Card(
-                      child: Text(snapShot.data[index].priority.toString()),
+                      child: isShow? Text(snapShot.data[index].eTime.toString()):Text('noData'),
                     ),
                   ],
                 ),
