@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget{
   }
   @override
   Widget build(BuildContext context){
-    setDb();
+    setDb(); //dbの設定を始めにする
     return MaterialApp(
       home:Home(),
       routes: {

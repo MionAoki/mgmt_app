@@ -43,7 +43,20 @@ class _AddTextState extends State<AddText>{
   var formatter = new DateFormat('yyyy/MM/dd(E) HH:mm');
 
 
+  void _insertDatas(String toDo, String sTime, String eTime) async{
+    var datas = Memo(
+      id: 0, 
+      toDo: toDo, 
+      sTime: sTime, 
+      eTime: eTime, 
+      DoY: 'Y'
+      );
+    await db.insertMemo(datas);
+  }
+  
+
   Widget build(BuildContext context) {
+
     return Container(
       margin: const EdgeInsets.only(left:50,right:50),
       padding: const EdgeInsets.all(30),
@@ -156,10 +169,12 @@ class _AddTextState extends State<AddText>{
               ),
               child: Text('Add'),
               onPressed: ()async{
+                _insertDatas(_text,formatter.format(_starttime),formatter.format(_endtime));
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => MainPage("hogehoge")
+                    //builder: (BuildContext context) => MainPage("hogehoge"),
+                    builder: (BuildContext context) => Home(),
                   )
                 );
               }

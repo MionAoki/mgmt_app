@@ -19,6 +19,6 @@ class _MainPageState extends State<MainPage>{
                 title:Text('Time Management'),
             ),
             body:Text(widget.argument),
-        );//Scaffold
+        );
     }
 }
