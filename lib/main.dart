@@ -4,20 +4,27 @@ import 'page1.dart';
 import 'page2.dart';
 import 'sample_db1.dart';
 
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget{
+  void setDb() async{ //使うdbの呼び出し
+    final db = SQLite();
+    await db.createDb();
+  }
   @override
   Widget build(BuildContext context){
+    setDb(); //dbの設定を始めにする
     return MaterialApp(
       home:Home(),
       routes: {
         '/home':(context) => Home(),
         '/main' : (context) => MainPage(),
-        '/page1' : (context) => AddText(),
+        '/page1' : (context) => Page1(),
         '/page2' : (context) => Page2(),
       }
     );

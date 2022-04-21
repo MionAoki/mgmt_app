@@ -3,6 +3,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'; //date,ti
 import 'package:intl/intl.dart';//time format
 import 'main.dart';
 import 'mainpage.dart';
+import 'sample_db1.dart';
 
 
 class Page1 extends StatelessWidget{
@@ -26,6 +27,7 @@ class AddText extends StatefulWidget{
 }
 
 class _AddTextState extends State<AddText>{
+  final db = SQLite();
 
   //input text
   String _text = '';
@@ -41,7 +43,20 @@ class _AddTextState extends State<AddText>{
   var formatter = new DateFormat('yyyy/MM/dd(E) HH:mm');
 
 
+  void _insertDatas(String toDo, String sTime, String eTime) async{
+    var datas = Memo(
+      id: 0, 
+      toDo: toDo, 
+      sTime: sTime, 
+      eTime: eTime, 
+      DoY: 'Y'
+      );
+    await db.insertMemo(datas);
+  }
+  
+
   Widget build(BuildContext context) {
+
     return Container(
       margin: const EdgeInsets.only(left:50,right:50),
       padding: const EdgeInsets.all(30),
@@ -78,8 +93,9 @@ class _AddTextState extends State<AddText>{
               children:<Widget>[
                 Padding(
                   padding:const EdgeInsets.only(right:20),
-                  child:Icon(Icons.access_time,),
+                  child:Icon(Icons.access_time),
                 ),
+                
                 Text("start time"),
 
                 Expanded(
@@ -153,10 +169,12 @@ class _AddTextState extends State<AddText>{
               ),
               child: Text('Add'),
               onPressed: ()async{
+                _insertDatas(_text,formatter.format(_starttime),formatter.format(_endtime));
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => MainPage("hogehoge")
+                    //builder: (BuildContext context) => MainPage("hogehoge"),
+                    builder: (BuildContext context) => MyApp(),
                   )
                 );
               }
