@@ -93,7 +93,7 @@ class _AddTextState extends State<AddText>{
               children:<Widget>[
                 Padding(
                   padding:const EdgeInsets.only(right:20),
-                  child:Icon(Icons.access_time,),
+                  child:Icon(Icons.access_time),
                 ),
                 
                 Text("start time"),
@@ -174,7 +174,7 @@ class _AddTextState extends State<AddText>{
                   context,
                   MaterialPageRoute(
                     //builder: (BuildContext context) => MainPage("hogehoge"),
-                    builder: (BuildContext context) => Home(),
+                    builder: (BuildContext context) => MyApp(),
                   )
                 );
               }

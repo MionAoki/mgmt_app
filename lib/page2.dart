@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'sample_db1.dart';
@@ -14,6 +15,13 @@ class Page2 extends StatefulWidget{
 class _Page2State extends State<Page2>{
   final db = SQLite();
 
+  void _deleteDatas(int i) async{
+    var selectId;
+    var allList = await db.getMemos();
+    selectId = allList[i].id;
+    await db.deleteMemo(selectId);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -23,6 +31,7 @@ class _Page2State extends State<Page2>{
       controller = StreamController( //streamを制御するコントローラーを設定
         onListen: () async { //Listenするときの処理
           var allList = await db.getMemos(); //awaitすることでallListに値を入れる
+          print(allList);
           controller.add(allList);
           await controller.close();
         },
@@ -32,50 +41,55 @@ class _Page2State extends State<Page2>{
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sample page 2'),
+        title: Text('All List'),
       ),
       
-      body: 
+      body:
       Container(
+        margin: EdgeInsets.only(top:20),
+        width: double.infinity,
         child:StreamBuilder(
           stream: list, //上で用意したStream型の変数(list)を入れる
           builder: (BuildContext context, AsyncSnapshot snapShot){
-
-            return ListView.builder( //リストを表示
-              itemCount: snapShot.data?.length ?? 0,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  color: Colors.blue,
-                  child: Row(
-
-                  children:<Widget>[
-                    if(snapShot.data != null)
-                    Card(
-                      child: Text(snapShot.data[index].toDo.toString()),
+            var ListLength = snapShot.data?.length ?? 1;
+            return DataTable( //テーブルを作成するclass
+              columns: [
+                DataColumn(label: Row(children:<Widget>[Icon(Icons.task),Text('toDo')])),
+                DataColumn(label: Row(children:<Widget>[Icon(Icons.access_time),Text('startTime')])),
+                DataColumn(label:  Row(children:<Widget>[Icon(Icons.access_time),Text('endTime')])),
+                DataColumn(label: Text('')),
+              ],
+              rows: [
+                if(snapShot.data != null)
+                  for (var i=0; i<ListLength; i++)
+                  DataRow(cells: [
+                    DataCell(Text(snapShot.data[i].toDo.toString())),
+                    DataCell(Text(snapShot.data[i].sTime.toString())),
+                    DataCell(Text(snapShot.data[i].eTime.toString())),
+                    DataCell(ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                        onPrimary: Colors.white,
+                      ),
+                      child: Text('Delete'),
+                      onPressed: ()async{
+                        _deleteDatas(i);
+                      },)
                     ),
-                    Card(
-                      child: Text(snapShot.data[index].sTime.toString()),
-                    ),
-                    Card(
-                      child: Text(snapShot.data[index].eTime.toString()),
-                    ),
-
-                    if(snapShot.data == null)
-                    Card(
-                      child: Text('NoData'),
-                    ),
-                  ],
-                ),
-
-                );
-              },
+                  ],),
+                if(snapShot.data == null)
+                  DataRow(cells: [
+                    DataCell(Text('NoData')),
+                    DataCell(Text('NoData')),
+                    DataCell(Text('NoData')),
+                     DataCell(Text('NoData')),
+                  ],),
+              ],
             );
           },
         ),
+
       ),
     );
   }
 }//_Page2State end
-
-
-
