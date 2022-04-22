@@ -22,6 +22,9 @@ class _Page2State extends State<Page2>{
     await db.deleteMemo(selectId);
   }
 
+  bool _active = false;
+  void _changeSwitch(bool e) => setState(() => _active = e);
+
   @override
   Widget build(BuildContext context) {
 
@@ -31,7 +34,6 @@ class _Page2State extends State<Page2>{
       controller = StreamController( //streamを制御するコントローラーを設定
         onListen: () async { //Listenするときの処理
           var allList = await db.getMemos(); //awaitすることでallListに値を入れる
-          print(allList);
           controller.add(allList);
           await controller.close();
         },
@@ -53,10 +55,12 @@ class _Page2State extends State<Page2>{
           builder: (BuildContext context, AsyncSnapshot snapShot){
             var ListLength = snapShot.data?.length ?? 1;
             return DataTable( //テーブルを作成するclass
+              columnSpacing: 0,
               columns: [
                 DataColumn(label: Row(children:<Widget>[Icon(Icons.task),Text('toDo')])),
                 DataColumn(label: Row(children:<Widget>[Icon(Icons.access_time),Text('startTime')])),
                 DataColumn(label:  Row(children:<Widget>[Icon(Icons.access_time),Text('endTime')])),
+                DataColumn(label: Text('Done or Yet')),
                 DataColumn(label: Text('')),
               ],
               rows: [
@@ -66,6 +70,19 @@ class _Page2State extends State<Page2>{
                     DataCell(Text(snapShot.data[i].toDo.toString())),
                     DataCell(Text(snapShot.data[i].sTime.toString())),
                     DataCell(Text(snapShot.data[i].eTime.toString())),
+                    DataCell(Row(
+                      children: <Widget>[
+                        showDoY(snapShot.data[i].DoY.toString()),
+                        Switch(
+                          value: _active,
+                          activeColor: Colors.orange,
+                          activeTrackColor: Colors.red,
+                          inactiveThumbColor: Colors.blue,
+                          inactiveTrackColor: Colors.green,
+                          onChanged: _changeSwitch,
+                        )
+                        ],),
+                    ),
                     DataCell(ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Colors.red,
@@ -82,7 +99,8 @@ class _Page2State extends State<Page2>{
                     DataCell(Text('NoData')),
                     DataCell(Text('NoData')),
                     DataCell(Text('NoData')),
-                     DataCell(Text('NoData')),
+                    DataCell(Text('NoData')),
+                    DataCell(Text('NoData')),
                   ],),
               ],
             );
@@ -93,3 +111,12 @@ class _Page2State extends State<Page2>{
     );
   }
 }//_Page2State end
+
+
+Widget showDoY(String DoY){
+  if(DoY == 'D'){
+    return const Text('Done');
+  }else{
+    return const Text('Yet');
+  }
+}
