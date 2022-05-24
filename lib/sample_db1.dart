@@ -53,7 +53,7 @@ class SQLite {
     //データの更新
     Future<void> updateMemo(Memo memo) async {
         final db = await database;
-        await db.update( //書き方はINSERTのときと同様
+        await db.update(
             'timgMgmt', //テーブル名
             memo.toMap(),
             where: "id = ?",
@@ -95,7 +95,7 @@ class Memo {
     };
   }
   
- Map<String,dynamic> insertMap(){ //memo型からmap型に変換
+ Map<String,dynamic> insertMap(){ //insertのときはid不要
     return{
       'toDo':toDo,
       'sTime':sTime,
@@ -103,7 +103,12 @@ class Memo {
       'DoY':DoY,
     };
   }
-  
+
+   Map<String,dynamic> swichMap(){ //insertのときはid不要
+    return{
+      'DoY':DoY,
+    };
+  }
   @override
   String toString() {
     return '{id: $id, toDo: $toDo, sTime: $sTime, eTime: $eTime, DoY: $DoY}';
