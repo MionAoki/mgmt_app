@@ -22,8 +22,8 @@ class _Page2State extends State<Page2>{
     await db.deleteMemo(selectId);
   }
 
-  bool _active = false;
-  void _changeSwitch(bool e) => setState(() => _active = e);
+  bool _activeSwitch = false;
+  void _changeSwitch(bool e) => setState(() => _activeSwitch = e);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,6 @@ class _Page2State extends State<Page2>{
                 DataColumn(label: Row(children:<Widget>[Icon(Icons.task),Text('toDo')])),
                 DataColumn(label: Row(children:<Widget>[Icon(Icons.access_time),Text('startTime')])),
                 DataColumn(label:  Row(children:<Widget>[Icon(Icons.access_time),Text('endTime')])),
-                DataColumn(label: Text('Done or Yet')),
                 DataColumn(label: Text('')),
               ],
               rows: [
@@ -70,33 +69,11 @@ class _Page2State extends State<Page2>{
                     DataCell(Text(snapShot.data[i].toDo.toString())),
                     DataCell(Text(snapShot.data[i].sTime.toString())),
                     DataCell(Text(snapShot.data[i].eTime.toString())),
-                    DataCell(Row(
-                      children: <Widget>[
-                        showDoY(snapShot.data[i].DoY.toString()),
-                        Switch(
-                          value: _active,
-                          activeColor: Colors.orange,
-                          activeTrackColor: Colors.red,
-                          inactiveThumbColor: Colors.blue,
-                          inactiveTrackColor: Colors.green,
-                          onChanged: _changeSwitch,
-                        )
-                        ],),
-                    ),
-                    DataCell(ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        onPrimary: Colors.white,
-                      ),
-                      child: Text('Delete'),
-                      onPressed: ()async{
-                        _deleteDatas(i);
-                      },)
-                    ),
+                    DataCell(_editButton(i),),
+
                   ],),
                 if(snapShot.data == null)
                   DataRow(cells: [
-                    DataCell(Text('NoData')),
                     DataCell(Text('NoData')),
                     DataCell(Text('NoData')),
                     DataCell(Text('NoData')),
@@ -110,6 +87,24 @@ class _Page2State extends State<Page2>{
       ),
     );
   }
+
+//deleteButton
+  Widget _deleteButton(int i){
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.red,
+        onPrimary: Colors.white,
+      ),
+      child: Text('Delete'),
+      onPressed: ()async{
+        _deleteDatas(i);
+        setState(() {
+          i = i-1;
+        });
+      },
+    );
+  }
+
 }//_Page2State end
 
 
@@ -119,4 +114,16 @@ Widget showDoY(String DoY){
   }else{
     return const Text('Yet');
   }
+}
+
+Widget _editButton(int i){
+  return ElevatedButton( //edit
+    style: ElevatedButton.styleFrom(
+      primary: Colors.blue,
+      onPrimary: Colors.white,
+    ),
+    child: Text('Edit'),
+    onPressed: ()async{
+    }
+  );
 }
