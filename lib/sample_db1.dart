@@ -14,10 +14,10 @@ class SQLite {
     createDb() async{
       database = openDatabase(
           //テーブルの作成場所の指定
-          join(await getDatabasesPath(), 'timeMgmtTable.db'),
+          join(await getDatabasesPath(), 'mgmtTimeTable.db'),
           onCreate:(db,version){ //テーブルの作成
               return db.execute(
-                  "CREATE TABLE timgMgmt(id INTEGER PRIMARY KEY AUTOINCREMENT,toDo TEXT, sTime TEXT, eTime TEXT, DoY TEXT)",
+                  "CREATE TABLE timgMgmt(id INTEGER PRIMARY KEY AUTOINCREMENT,toDo TEXT, sTime TEXT, eTime TEXT, isDone INTEGER)",
               );
           },
           version: 1,
@@ -28,7 +28,7 @@ class SQLite {
     Future<int> insertMemo(Memo memo) async {
         final Database db = await database;
         return await db.insert( //openDatabaseで作成したインスタンスに対してINSERTする
-            'timgMgmt', //対象のテーブル名
+            'mgmtTime', //対象のテーブル名
             memo.insertMap(), //保存するデータのMap
             conflictAlgorithm: ConflictAlgorithm.replace, //コンフリクト時のアルゴリズム(SQLiteでは対応を定義しておける)
         );
